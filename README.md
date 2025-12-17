@@ -1,6 +1,18 @@
 # OpenCode Config
 
-Personal OpenCode configuration with custom agents and plugins.
+Personal OpenCode configuration with custom agents, commands, and plugins.
+
+## Installation
+
+**Option 1: Clone the repository**
+
+```bash
+git clone https://github.com/noelrohi/opencode-config.git ~/.config/opencode
+```
+
+**Option 2: Copy manually**
+
+Download or copy the `agent/`, `command/`, and `plugin/` folders into `~/.config/opencode/`.
 
 ## Agents
 
@@ -21,21 +33,22 @@ Creates distinctive, production-grade UI with:
 /designer build a landing page for a meditation app
 ```
 
-### documenter.md
-**Mode:** secondary  
-**Use:** When documenting a codebase
+## Commands
 
-Generates two documentation files:
-- `docs/platform.md` - UI screens, components, user flows, features
-- `docs/architecture.md` - Startup flows, storage, events, data lifecycle
+Custom slash commands in `command/` directory:
 
-Process:
-1. Explores codebase (entry points, routes, components, state, hooks)
-2. Creates structured docs with ASCII diagrams, TypeScript interfaces, tables
-3. Updates AGENTS.md/CLAUDE.md with doc references
+### document-platform.md
+Generates `docs/platform.md` covering UI screens, components, user flows, and features.
 
 ```
-/documenter document this project
+/document-platform
+```
+
+### document-architecture.md
+Generates `docs/architecture.md` covering app initialization, storage, data lifecycle, and technical flows.
+
+```
+/document-architecture
 ```
 
 ## Plugins
@@ -73,13 +86,15 @@ await $`afplay /System/Library/Sounds/Funk.aiff && say "${lastFolder}"`;
 ```
 ~/.config/opencode/
 ├── agent/
-│   ├── designer.md      # Frontend design agent
-│   └── documenter.md    # Documentation generator
+│   └── designer.md         # Frontend design agent
+├── command/
+│   ├── document-platform.md      # Platform documentation generator
+│   └── document-architecture.md  # Architecture documentation generator
 ├── plugin/
-│   └── notify.js        # Completion notifications
-├── opencode.json        # Main config
-├── package.json         # Plugin dependencies
-└── README.md            # This file
+│   └── notify.js           # Completion notifications
+├── opencode.json           # Main config
+├── package.json            # Plugin dependencies
+└── README.md               # This file
 ```
 
 ## Dependencies
