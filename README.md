@@ -1,6 +1,6 @@
 # OpenCode Config
 
-Personal OpenCode configuration with custom agents, commands, and plugins.
+Personal OpenCode configuration with custom commands, plugins, and provider settings.
 
 ## Installation
 
@@ -12,26 +12,7 @@ git clone https://github.com/noelrohi/opencode-config.git ~/.config/opencode
 
 **Option 2: Copy manually**
 
-Download or copy the `agent/`, `command/`, and `plugin/` folders into `~/.config/opencode/`.
-
-## Agents
-
-Custom agents in `agent/` directory:
-
-### designer.md
-**Mode:** primary  
-**Use:** When building frontend interfaces
-
-Creates distinctive, production-grade UI with:
-- Bold aesthetic direction (brutalist, minimalist, maximalist, etc.)
-- Unique typography (avoids generic fonts like Inter, Arial)
-- Intentional color schemes and spatial composition
-- Motion and micro-interactions
-- Creative backgrounds and visual details
-
-```
-/designer build a landing page for a meditation app
-```
+Download or copy the `command/` and `plugin/` folders into `~/.config/opencode/`.
 
 ## Commands
 
@@ -54,16 +35,6 @@ Generates `docs/architecture.md` covering app initialization, storage, data life
 ## Plugins
 
 Custom plugins in `plugin/` directory:
-
-### notify.js
-**Event:** `session.idle`
-
-Plays a sound and announces the project folder name when a session completes.
-
-```javascript
-// On completion: plays Funk.aiff and says folder name
-await $`afplay /System/Library/Sounds/Funk.aiff && say "${lastFolder}"`;
-```
 
 ### gemini-image.ts
 **Tool:** `gemini_image`
@@ -119,34 +90,64 @@ gemini_image({
 
 ### opencode.json
 
+Main configuration with plugins and custom providers:
+
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-gemini-auth"],
-  "provider": {},
-  "mcp": {}
+  "plugin": [
+    "oh-my-opencode",
+    "opencode-antigravity-auth@1.2.6"
+  ],
+  "provider": {
+    "google": {
+      "models": {
+        "gemini-3-pro-high": { "name": "Gemini 3 Pro High (Antigravity)" },
+        "gemini-3-pro-medium": { "name": "Gemini 3 Pro Medium (Antigravity)" },
+        "gemini-3-pro-low": { "name": "Gemini 3 Pro Low (Antigravity)" },
+        "gemini-3-flash": { "name": "Gemini 3 Flash (Antigravity)" },
+        "gemini-3-flash-lite": { "name": "Gemini 3 Flash Lite (Antigravity)" }
+      }
+    }
+  }
 }
 ```
 
 **Plugins:**
-- `opencode-gemini-auth` - Google Gemini authentication
+- `oh-my-opencode` - Enhanced agent configurations
+- `opencode-antigravity-auth` - Antigravity authentication for Gemini models
+
+### oh-my-opencode.json
+
+Agent model assignments:
+
+```json
+{
+  "agents": {
+    "librarian": { "model": "opencode/big-pickle" },
+    "oracle": { "model": "anthropic/claude-opus-4-5" },
+    "frontend-ui-ux-engineer": { "model": "google/gemini-3-pro-high" },
+    "document-writer": { "model": "google/gemini-3-flash" },
+    "multimodal-looker": { "model": "google/gemini-3-flash" }
+  }
+}
+```
 
 ## Structure
 
 ```
 ~/.config/opencode/
-├── agent/
-│   └── designer.md         # Frontend design agent
 ├── command/
 │   ├── document-platform.md      # Platform documentation generator
 │   └── document-architecture.md  # Architecture documentation generator
 ├── plugin/
-│   ├── notify.js           # Completion notifications
 │   └── gemini-image.ts     # Image generation tool
 ├── generated-images/       # Output directory for generated images
 ├── opencode.json           # Main config
+├── oh-my-opencode.json     # Agent model assignments
 ├── package.json            # Plugin dependencies
 ├── .env.example            # Environment variables template
+├── AGENTS.md               # Repository conventions
 └── README.md               # This file
 ```
 
@@ -155,7 +156,7 @@ gemini_image({
 ```json
 {
   "@google/genai": "^1.0.0",
-  "@opencode-ai/plugin": "1.0.164",
+  "@opencode-ai/plugin": "1.0.203",
   "@types/bun": "^1.3.4"
 }
 ```
