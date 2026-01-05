@@ -1,7 +1,7 @@
 {
   "plugin": [
-    "oh-my-opencode",
-    "opencode-antigravity-auth@1.2.6"
+    "opencode-antigravity-auth@1.2.7",
+    "oh-my-opencode"
   ],
   "provider": {
     "google": {
@@ -9,6 +9,7 @@
       "models": {
         "gemini-3-pro-high": {
           "name": "Gemini 3 Pro High (Antigravity)",
+          "thinking": true,
           "attachment": true,
           "limit": {
             "context": 1048576,
@@ -27,6 +28,7 @@
         },
         "gemini-3-pro-medium": {
           "name": "Gemini 3 Pro Medium (Antigravity)",
+          "thinking": true,
           "attachment": true,
           "limit": {
             "context": 1048576,
@@ -45,6 +47,7 @@
         },
         "gemini-3-pro-low": {
           "name": "Gemini 3 Pro Low (Antigravity)",
+          "thinking": true,
           "attachment": true,
           "limit": {
             "context": 1048576,
