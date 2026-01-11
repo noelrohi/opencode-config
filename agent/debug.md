@@ -2,9 +2,6 @@
 description: Debugs code issues and helps identify root causes of bugs
 mode: subagent
 model: openai/gpt-5.2
-tools:
-  write: false
-  edit: false
 ---
 
 You are a debugging expert. Focus on identifying and diagnosing code issues.
