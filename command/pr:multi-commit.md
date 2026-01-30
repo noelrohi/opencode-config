@@ -32,6 +32,25 @@ Common types:
 - `test`: Adding/updating tests
 - `chore`: Maintenance tasks
 
+**If changes are unclear or could be grouped multiple ways, ask the user:**
+
+Use the `AskQuestionTool` to present options:
+```
+AskQuestionTool: {
+  "questions": [
+    {
+      "header": "Commit Grouping",
+      "question": "How would you like to group these changes?",
+      "options": [
+        {"label": "By feature area", "description": "Group commits by UI, API, auth, etc."},
+        {"label": "By change type", "description": "Separate features, fixes, refactors into their own commits"},
+        {"label": "Single commit", "description": "Combine all changes into one commit"}
+      ]
+    }
+  ]
+}
+```
+
 ### Step 3: Create Commits
 
 For each logical group:
@@ -48,11 +67,15 @@ For each logical group:
 
 3. Repeat for each group until all changes are committed.
 
-### Step 4: Push and Create PR
+### Step 4: Create Branch and Push
 
-1. Determine the base branch (usually `main` or `master`):
+1. Check current branch - if on `main` or `master`, create a feature branch:
    ```bash
-   git branch -r | grep -E 'origin/(main|master)$'
+   CURRENT_BRANCH=$(git branch --show-current)
+   if [[ "$CURRENT_BRANCH" == "main" || "$CURRENT_BRANCH" == "master" ]]; then
+     FEATURE_BRANCH="feat/$(date +%s)"
+     git checkout -b "$FEATURE_BRANCH"
+   fi
    ```
 
 2. Push the branch:
@@ -80,14 +103,41 @@ For each logical group:
    )"
    ```
 
-### Step 5: Return PR URL
+### Step 5: Create the PR
+
+1. Determine the base branch (usually `main` or `master`):
+   ```bash
+   BASE_BRANCH=$(git branch -r | grep -E 'origin/(main|master)$' | head -1 | sed 's/origin\///')
+   ```
+
+2. Create the PR with a comprehensive summary:
+   ```bash
+   gh pr create --base "$BASE_BRANCH" --title "Brief PR title" --body "$(cat <<'EOF'
+   ## Summary
+   
+   Brief overview of what this PR accomplishes.
+   
+   ## Changes
+   
+   - Commit 1: description
+   - Commit 2: description
+   - ...
+   
+   ## Testing
+   
+   How to test these changes (if applicable).
+   EOF
+   )"
+   ```
+
+### Step 6: Return PR URL
 
 After creating the PR, output the PR URL so the user can review it.
 
 ## Guidelines
 
 ### Do:
-- Ask the user how they want changes grouped if unclear
+- Use AskQuestionTool when asking user for input
 - Keep commits small and focused
 - Write meaningful commit messages that explain "why"
 - Include all relevant changes in the PR description
